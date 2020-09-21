@@ -11,33 +11,47 @@ import random
 # 用来计算最终结果
 def Calculation_Formula(a,b,c,c1,c2):
     num = 0
-    if c2 == '*' and c1 != '*' and c1 != '/':
-        if c1 == '-':
-            num = (-b)*c
-        else:
-            num = b*c
-        
-    if c2 == '/' and c1 != '*' and c1 != '/':
-        if c1 == '-':
-            num = (-b)/c
-        else:
-            num = b/c
+    flag = 0
+    if c2 == '*':
+        if c1 != '*':
+            if  c1 != '/':
+                if c1 == '-':
+                    num = (-b)*c
+                else:
+                    num = b*c
+                flag = 1
+    if c2 == '/':
+        if c1 != '*':
+            if  c1 != '/':
+                if c1 == '-':
+                    num = (-b)/c
+                else:
+                    num = b/c
+                flag = 1
     if c1 ==  '+':
-        num = num+a+b
-    if c1 == '-':
-        num = num+a-b
+        if flag == 1:
+            num = num+a
+        else:
+            num = a+b
+    if c1 ==  '-':
+        if flag == 1:
+            num = num+a
+        else:
+            num = a-b
     if c1 == '*':
-        num = num+a*b
+        num = a*b
     if c1 == '/':
-        num = num+a/b
+        num = a/b
     if c2 == '+':
         num = num+c
     if c2 == '-':
         num = num-c
     if c2 == '*':
-        num = num*c
+        if flag == 0:
+            num = num*c
     if c2 == '/':
-        num = num/c
+        if flag == 0:
+            num = num/c
     return num
  
  
@@ -62,24 +76,21 @@ def Random_Formula():
         Random_Formula()
     formula = str(a) + MathematicalSymbols1 + str(b) + MathematicalSymbols2 + str(c)
     re = Calculation_Formula(a,b,c,MathematicalSymbols1,MathematicalSymbols2)
-    string = formula+'='+'      '+str(re)
+    string = formula+'='+str(re)
     # 防止出现负数
-    # Negative numbers are not allowed 
-    if re < 0 :   
+    if re < 0 : 
         Random_Formula()
     else:
         # print(formula,'=',re)
         # 将生成的算式写到文件中去
-        # Write the generated aruthmetic to the file
-        with open(r'D:\Py-test\01.txt','a',encoding='utf-8') as f:
+        with open(r'D:\Py-test\02.txt','a',encoding='utf-8') as f:
             f.write(string)
             # 为了美观
             f.write('\n')
         pass
  
  
-# 生成25个小学加减乘除混合运算
-# Generate a hybrid operation of 25 primary school
+#生成25个小学加减乘除混合运算
 for i in range(25):
     Random_Formula()
     pass
